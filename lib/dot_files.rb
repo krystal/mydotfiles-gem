@@ -21,7 +21,7 @@ module DotFiles
     end
     
     def site
-      "http://localhost:3000"
+      "http://mydotfiles.com"
     end
     
     def configuration_path

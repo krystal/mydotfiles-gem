@@ -66,6 +66,7 @@ module DotFiles
     def remote_files
       if files = get_remote_files
         array = []
+        DotFiles.config.shas = Hash.new unless DotFiles.config.shas.is_a?(Hash)
         for filename, remote_sha in files
           hash = {:filename => filename, :action => nil, :local_sha => nil, :local_cached_sha => nil, :remote_sha => remote_sha, :local_path => File.join(ENV['HOME'], filename)}
           
