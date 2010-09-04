@@ -82,6 +82,8 @@ command :pull do |path|
   local_path = File.join(ENV['HOME'], filename)
   if contents = remote_file_contents(filename)
     File.open(local_path, 'w') { |f| f.write(contents) }
+    DotFiles.config.shas[filename] = Digest::SHA1.hexdigest(contents)
+    DotFiles.config.save
     puts "Downloaded #{contents.size} bytes to #{local_path}."
   else
     error "Couldn't download remote file from '#{filename}'. Does it exist?"
