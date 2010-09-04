@@ -41,10 +41,8 @@ command :sync do
         puts "{{downloading}} #{file[:filename]}"
         contents = remote_file_contents(file[:filename])
         puts "{{saving}} #{file[:filename]}"
-        local_path = File.join(ENV['HOME'], file[:filename])
-        File.open(local_path, 'w') { |f| f.write(contents) }
-        puts "{{saved}} #{contents.size.to_s} bytes to #{local_path}"
-        DotFiles.config.shas[file[:filename]] = Digest::SHA1.hexdigest(contents)
+        save_local_file(file[:filename], contents)
+        puts "{{saved}} #{contents.size.to_s} bytes to #{file[:filename]}"
       when :update_remote
         puts "{{uploading}} #{file[:filename]}"
         local_path = File.join(ENV['HOME'], file[:filename])
@@ -79,12 +77,9 @@ desc 'Pull a remote file to your local file system'
 usage 'pull path/to/dotfile'
 command :pull do |path|
   filename = path.gsub(/\A#{ENV['HOME']}\//, '')
-  local_path = File.join(ENV['HOME'], filename)
   if contents = remote_file_contents(filename)
-    File.open(local_path, 'w') { |f| f.write(contents) }
-    DotFiles.config.shas[filename] = Digest::SHA1.hexdigest(contents)
-    DotFiles.config.save
-    puts "Downloaded #{contents.size} bytes to #{local_path}."
+    save_local_file(filename, contents)
+    puts "Downloaded #{contents.size} bytes to #{filename}."
   else
     error "Couldn't download remote file from '#{filename}'. Does it exist?"
   end

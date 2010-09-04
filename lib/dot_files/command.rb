@@ -113,6 +113,14 @@ module DotFiles
       req = request("save", :data => {:dot_file => {:path => path, :file => contents}})
       req ? true : false
     end
+    
+    def save_local_file(filename, contents)
+      local_path = File.join(ENV['HOME'], filename)
+      FileUtils.mkdir_p(File.dirname(local_path))
+      File.open(local_path, 'w') { |f| f.write(contents) }
+      DotFiles.config.shas[filename] = Digest::SHA1.hexdigest(contents)
+      DotFiles.config.save
+    end
 
     private
 

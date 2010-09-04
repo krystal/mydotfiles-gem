@@ -3,6 +3,7 @@ require 'json'
 require 'uri'
 require 'net/http'
 require 'digest'
+require 'fileutils'
 
 require 'dot_files/errors'
 require 'dot_files/config'
