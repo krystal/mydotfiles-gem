@@ -4,7 +4,6 @@ command :setup do
   
   require 'highline/import'
   HighLine.track_eof = false
-
   
   puts "Welcome to MyDotFiles."
   puts
@@ -25,8 +24,14 @@ command :setup do
     DotFiles.config.username = username
     DotFiles.config.api_key = api_key
     DotFiles.config.save
-    puts "\e[32mThis computer has now been authorised. Run 'dotfiles sync' to get the latest files.\e[0m"
+    puts "\e[32mThis computer has now been authorised.\e[0m"
+    puts
+    puts "We suggest you now run {{dotfiles fetch}} to download all your existing dotfiles. After this point,"
+    puts "you will be able to run {{dotfiles sync}} to keep them in sync."
+    puts
   else
     error "Your account could not be authorised. Please check your email address & password."
   end
+
+  
 end

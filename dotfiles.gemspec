@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'dotfiles'
-  s.version = "1.0.4"
+  s.version = "1.0.6"
   s.platform = Gem::Platform::RUBY
   s.summary = "CLI client for the mydotfiles.com"
   

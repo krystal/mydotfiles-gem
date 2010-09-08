@@ -128,7 +128,6 @@ module DotFiles
       req = request("files_list")
       req ? JSON.parse(req) : nil
     end
-
     
   end
 end

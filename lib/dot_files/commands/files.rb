@@ -64,6 +64,7 @@ end
 desc 'Add a new (or overwrite an existing) file'
 usage 'add path/to/dotfile'
 command :add do |path|
+  require_setup
   filename = path.gsub(/\A#{ENV['HOME']}\//, '')
   local_path = File.join(ENV['HOME'], filename)
   contents = File.read(local_path)
@@ -76,11 +77,33 @@ end
 desc 'Pull a remote file to your local file system'
 usage 'pull path/to/dotfile'
 command :pull do |path|
+  require_setup
   filename = path.gsub(/\A#{ENV['HOME']}\//, '')
   if contents = remote_file_contents(filename)
     save_local_file(filename, contents)
     puts "Downloaded #{contents.size} bytes to #{filename}."
   else
     error "Couldn't download remote file from '#{filename}'. Does it exist?"
+  end
+end
+
+desc 'Pull all remote files'
+usage 'fetch'
+command :fetch do
+  require_setup
+  require 'highline/import'
+  HighLine.track_eof = false
+  
+  for name, remote_sha in get_remote_files
+    if File.exist?(File.join(ENV['HOME'], name))
+      o = ask("#{name} exists. Do you wish to overwrite? [Y/n]")
+      if o.to_s[0,1].upcase == 'N'
+        next
+      end
+    end
+    
+    contents = remote_file_contents(name)
+    save_local_file(name, contents)
+    puts "saved #{name} (#{contents.size} bytes)"
   end
 end

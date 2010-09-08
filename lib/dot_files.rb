@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'json'
+require 'yaml'
 require 'uri'
 require 'net/http'
 require 'digest'
